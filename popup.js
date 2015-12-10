@@ -18,12 +18,15 @@ $('#enter').on('click', function() {
 
       $(eachStack).appendTo('table');
 
+      // add titles to the main div
       var titles = $('<div>' + result[i]['title'] + '</div>');
       $(titles).appendTo(eachStack);
 
-      var links = $('<a href=' + result[i]['link'] + '.html>' + result[i]['link'] + '</a>');
+      // changed the 'divs' to 'a href' since that's basically what tags links have
+      var links = $('<a href=' + result[i]['link'] + '>' + result[i]['link'] + '</a>');
       $(links).appendTo(titles);
 
+      // add tags to titles
       var tags = $('<p>' + result[i]['tags'] + '</p>');
       $(tags).appendTo(titles);
     }
@@ -33,16 +36,10 @@ $('#enter').on('click', function() {
 
 });
 
-// function injectScript() {
-$('.stack').each(function(i, element){
-  var newData = $(this);
-  console.log(newData);
-  // var json = {
-  //   url: newData.find('a').attr('href')
-//   }
-// });
-
-  $(newData.find('a').attr('href')).on('click', function() {
-    chrome.tabs.create({url : newData.find('a').attr('href') });
-  });
-});
+//*****The idea is to attach onclick functionality to the a tags (the links) so that a tab will be created when link is clicked*****
+var elements = document.getElementsByClassName('a');
+for(var i = 0, len = elements.length; i < len; i++) {
+    elements[i].onclick = function () {
+      chrome.tabs.create({ url : elements[i] })
+    }
+}
