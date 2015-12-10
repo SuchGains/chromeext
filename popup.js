@@ -24,7 +24,12 @@ $('#enter').on('click', function() {
 
       // changed the 'divs' to 'a href' since that's basically what tags links have
       var links = $('<a href=' + result[i]['link'] + '>' + result[i]['link'] + '</a>');
-      $(links).appendTo(titles);
+      console.log(links['0'].href);
+      // links is a massive object after appending. so need to reduce it down to the actual link
+      $(links).appendTo(titles).on('click', function(links) {
+        console.log(links);
+        chrome.tabs.create({ url : links['target'].href })
+      });
 
       // add tags to titles
       var tags = $('<p>' + result[i]['tags'] + '</p>');
@@ -37,9 +42,9 @@ $('#enter').on('click', function() {
 });
 
 //*****The idea is to attach onclick functionality to the a tags (the links) so that a tab will be created when link is clicked*****
-var elements = document.getElementsByClassName('a');
-for(var i = 0, len = elements.length; i < len; i++) {
-    elements[i].onclick = function () {
-      chrome.tabs.create({ url : elements[i] })
-    }
-}
+// var elements = document.getElementsByClassName('a');
+// for(var i = 0, len = elements.length; i < len; i++) {
+//     elements[i].onclick = function () {
+//       chrome.tabs.create({ url : elements[i] })
+//     }
+// }
