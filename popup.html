@@ -7,8 +7,8 @@
 <html>
   <head>
     <title>Getting Started Extension's Popup</title>
-    <script src="jquery-1.11.3.min.js"></script>
-
+    <script src ="jquery-1.11.3.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="popup.css">
     <!-- this is just style, not body -->
     <style>
       body {
@@ -24,20 +24,24 @@
       }
     </style>
 
+
     <!--
       - JavaScript and HTML must be in separate files: see our Content Security
       - Policy documentation[1] for details and explanation.
       -
       - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
      -->
-    
   </head>
   <body>
-    <div id="search">
-      <input id="user" type="text" placeholder="Search StackOverflow" name="stack">
-      <button id="enter" type="submit">Search</button>
+
+    <div>
+      <input type="text" name="search" value="Search Stack"><br>
+      <button id ="enter" type = "submit">Search</buton>
     </div>
-    <script src="popup.js"></script>
+
+  <script src="popup.js" ></script>
+
   </body>
+
 </html>
 

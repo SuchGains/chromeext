@@ -1,50 +1,36 @@
-// console.log($);
-// console.log(document);
-$('#enter').on('click', function() {
-  // var searchUrl = 'https://api.stackexchange.com/docs/search'+ '/2.2/search?order=desc&sort=activity&intitle=' + searchTerm + '&site=stackoverflow';
-  // $.get()
-  var userInput = $('#user').val();
-  console.log(userInput);
-  $.get('https://api.stackexchange.com/2.2/search?order=desc&sort=activity&intitle=' + userInput + '&site=stackoverflow', function(data) {
-    var result = data.items;
 
-    for (var i = 0; i < result.length; i++) {
-      // console.log('this is a title', result[i]['title']);
-      var eachStack = $('<div class="stack"></div>');
-
-      var prettyify = document.createElement('table');
-      prettyify.style.border = '1px solid black';
-      $(prettyify).appendTo('body');
-
-      $(eachStack).appendTo('table');
-
-      // add titles to the main div
-      var titles = $('<div>' + result[i]['title'] + '</div>');
-      $(titles).appendTo(eachStack);
-
-      // changed the 'divs' to 'a href' since that's basically what tags links have
-      var links = $('<a href=' + result[i]['link'] + '>' + result[i]['link'] + '</a>');
-      console.log(links['0'].href);
-      // links is a massive object after appending. so need to reduce it down to the actual link
-      $(links).appendTo(titles).on('click', function(links) {
-        console.log(links);
-        chrome.tabs.create({ url : links['target'].href })
-      });
-
-      // add tags to titles
-      var tags = $('<p>' + result[i]['tags'] + '</p>');
-      $(tags).appendTo(titles);
-    }
-  });
-  // console.log("you clicked");
-  // alert('yay');
-
-});
-
-//*****The idea is to attach onclick functionality to the a tags (the links) so that a tab will be created when link is clicked*****
-// var elements = document.getElementsByClassName('a');
-// for(var i = 0, len = elements.length; i < len; i++) {
-//     elements[i].onclick = function () {
-//       chrome.tabs.create({ url : elements[i] })
-//     }
-// }
+  $('#enter').on("click", function(){
+      //get the searchTerm the user has used       //console.log('Im inside click')
+      var inputWord = $('input[type=text]').val()
+                    //console.log($('input[type=text]').val());
+        var retrieved =  $.get("https://api.stackexchange.com//2.2/search?order=desc&sort=activity&intitle="+inputWord+"&site=stackoverflow",
+        function(data){
+              //The data attained from doing a get request form the stackoverflow API
+                       // console.log('data',data)
+              //Saving specifically the answers gotten from the data.
+              var answers = data.items;
+              var titleOfQuestion,
+                    tags,
+                      link;
+              for (var i = 0 ; i <answers.length; i++){
+              //Grabbing the title of the stackoverflow question
+                      //console.log('the title',answers[i]['title']);
+                  titleOfQuestion = answers[i]['title'];
+                      console.log('titleOfQuestion',titleOfQuestion);
+                  tags = 'Tags:'+ answers[i]['tags'];
+                  link = answers[i]['link'];
+                    //console.log('tags',tags,);
+                   //console.log('link',link);
+                //We're creating div tags and wrapping  every individual answers title, link and tags in one div
+              var searchItem = $('body').append(`<div class = search ><a href="${link}">${titleOfQuestion}</a><div class = searchTags>${tags}</div>></div>`);
+            }
+            $("a").click(function(){
+              var productLink = $(this).attr("href");
+              // productLink.attr("target", "_blank");
+              window.open(productLink);
+              //return false;
+            });
+       })
+      //the whole object
+      console.log('retrieved',retrieved)
+ 	});
